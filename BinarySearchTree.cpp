@@ -94,7 +94,83 @@ class BST{
         cout<<r->value<<"\n";
         print2D(r->left, space); //Process Left Child
         }
+
+        void printPreorder(TreeNode* r) //(Current Node, Left, Right)
+        {
+            if(r == NULL)
+                return;
+            // first print data of node
+            cout << r->value << " ";
+            // then recur on right subtree
+            printPreorder(r->left);
+            // now recur on right subtree
+            printPreorder(r->right);
+        }
+
+        void printInorder(TreeNode* r) // (Left, Current Node, Right)
+        {
+            if(r == NULL)
+                return;
+            // first recur on left child
+            printInorder(r->left);
+            //then print the data of node
+            cout << r->value << " ";
+            //now recur on right child
+            printInorder(r->right);
+        }
+
+        void printPostorder(TreeNode* r) // (Left, Right, Current Node)
+        {
+            if(r == NULL)
+                return;
+            // first recur on left subtree
+            printPostorder(r->left);
+            //then recur on right subtree
+            printPostorder(r->right);
+            //now deal with the node
+            cout << r->value << " ";
+        }
+
+        TreeNode* iterativeSearch(int v)
+        {
+            if(root==NULL)
+            {
+                return root;
+            }
+            else
+            {
+                TreeNode *temp=root;
+                while(temp!=NULL)
+                {
+                    if(v==temp->value)
+                    {
+                        return temp;
+                    }
+                    else if(v<temp->value)
+                    {
+                        temp = temp->left;
+                    }
+                    else
+                    {
+                        temp = temp->right;
+                    }
+                }
+                return  NULL;
+            }
+        }
         
+        TreeNode* recursiveSearch(TreeNode* r, int val)
+        {
+            if(r == NULL || r->value == val)
+                return r;
+            
+            else if (val < r->value)
+                return recursiveSearch(r->left, val);
+
+            else
+                return recursiveSearch(r->right, val);
+        }
+
 };
 
 int main()
@@ -131,6 +207,18 @@ int main()
             break;
         case 2:
             cout<<"SEARCH"<<endl;
+            cout<<"ENTER VALUE OF TREE NODE TO SEARCH IN BST: ";
+            cin >> val;
+            // new_node = obj.iterativeSearch(val);
+            new_node = obj.recursiveSearch(obj.root,val);
+            if(new_node!=NULL)
+            {
+                cout <<"Value Found"<<endl;
+            }
+            else
+            {
+                cout <<"Value NOT Found"<<endl;
+            }
             break;
         case 3:
             cout<<"DELETE"<<endl;
@@ -138,6 +226,15 @@ int main()
         case 4:
             cout<<"PRINT"<<endl;
             obj.print2D(obj.root,5);
+            cout<<"PREORDER :"<<endl;
+            obj.printPreorder(obj.root);
+            cout<<endl;
+            cout<<"INORDER :"<<endl;
+            obj.printInorder(obj.root);
+            cout<<endl;
+            cout<<"POSTORDER :"<<endl;
+            obj.printPostorder(obj.root);
+            cout<<endl;
             break;
         case 5:
             cout<<"CLR SCR"<<endl;
@@ -151,8 +248,5 @@ int main()
     } 
     while (option!=0);
     
-
-    
-
     return 0;
 }
