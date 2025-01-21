@@ -171,6 +171,23 @@ class BST{
                 return recursiveSearch(r->right, val);
         }
 
+        int height(TreeNode* r)
+        {
+            if (r==NULL)
+                return -1;
+            else
+            {
+                // Compute the height if each subtree
+                int lheight = height(r->left);
+                int rheight = height(r->right);
+
+                //use the larger one
+                if (lheight > rheight)
+                    return(lheight + 1);
+                else return(rheight + 1);
+            }
+        }
+
 };
 
 int main()
@@ -186,7 +203,8 @@ int main()
        cout<<"2. Search Node" <<endl;
        cout<<"3. Delete Node" <<endl;
        cout<<"4. Print BST Values" <<endl;
-       cout<<"5. Clear Screen" <<endl;
+       cout<<"5. Height of Tree" <<endl;
+       cout<<"6. Clear Screen" <<endl;
        cout<<"0. Exit Program" <<endl;
 
        cin>>option;
@@ -237,6 +255,10 @@ int main()
             cout<<endl;
             break;
         case 5:
+            cout<<"TREE HEIGHT"<<endl;
+            cout<<"Height : "<<obj.height(obj.root)<<endl;
+            break;
+        case 6:
             cout<<"CLR SCR"<<endl;
             system("cls");
             break;
