@@ -188,6 +188,88 @@ class BST{
             }
         }
 
+        // Print nodes at a given level
+        void printGivenLevel(TreeNode* r, int level)
+        {
+            if (r == NULL)
+                return;
+            else if (level == 0)
+                cout << r->value << " ";
+            else // level > 0
+            {
+                printGivenLevel(r->left, level-1);
+                printGivenLevel(r->right, level-1);
+            }
+        }
+        void printLevelOrderBFS(TreeNode* r)
+        {
+            int h = height(r);
+            for (int i=0; i<=h; i++)
+                printGivenLevel(r, i);            
+                    
+        }
+
+        TreeNode* minValueNode(TreeNode* node)
+        {
+            TreeNode* current = node;
+            // Loop down to find the leftmost leaf
+            while (current->left != NULL)
+            {
+                current = current->left;
+            }
+            return current;
+        }
+
+        TreeNode* deleteNode(TreeNode* r, int v)
+        {
+            // base case
+            if(r == NULL)
+            {
+                return NULL;
+            }
+            // if the key to be deleted is smaller than the root's key,
+            // then it lies in left subtree
+            else if ( v < r->value)
+            {
+                r->left = deleteNode(r->left, v);
+            }
+            // if the key to be deleted is greater than the root's key,
+            // then it lies in right subtree
+            else if (v > r->value)
+            {
+                r->right = deleteNode(r->right, v);
+            }
+            // if key is same as root's key, the this is the node to be deleted
+            else
+            {
+                // node with only one child or no child
+                if (r->left == NULL)
+                {
+                    TreeNode* temp = r->right;
+                    delete r;
+                    return temp;
+                }
+                else if(r->right == NULL)
+                {
+                    TreeNode* temp = r->left;
+                    delete r;
+                    return temp;
+                }
+                else
+                {
+                    // node with two children: Get the inorder successor (smallest
+                    // in the right subtree)
+                    TreeNode* temp = minValueNode(r->right);
+                    // copy the inorder sucessor's content to this node
+                    r->value = temp->value;
+                    // Delete the inorder sucessor
+                    r->right = deleteNode(r->right, temp->value);
+                    // deleteNode(r->right, temp->value);
+                }
+                }
+                return r;
+            }
+
 };
 
 int main()
@@ -240,10 +322,26 @@ int main()
             break;
         case 3:
             cout<<"DELETE"<<endl;
+            cout<<"Enter VALUE OF TREE NODE TO DELETE IN BST: ";
+            cin >> val;
+            new_node = obj.iterativeSearch(val);
+            if (new_node!=NULL)
+            {
+                obj.deleteNode(obj.root, val);
+                cout <<"Value Deleted"<<endl;
+            }
+            else
+            {
+                cout <<"Value Deleted"<<endl;
+            }
             break;
         case 4:
             cout<<"PRINT"<<endl;
             obj.print2D(obj.root,5);
+            cout << endl;
+            cout << "Print Level Order BFS: \n";
+            obj.printLevelOrderBFS(obj.root);
+            cout<<endl;
             cout<<"PREORDER :"<<endl;
             obj.printPreorder(obj.root);
             cout<<endl;
